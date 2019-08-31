@@ -15,5 +15,12 @@ namespace TextBufferTest
         {
             Assert.Equal(expected, new Point(row, column).Negate().ToString());
         }
+
+        [Fact]
+        public void FromObjectReturnsANewPointIfObjectIsPointCompatibleArray()
+        {
+            Assert.Equal(new Point(1, 3), Point.FromObject(new double[] { 1, 3 }));
+            Assert.Equal(new Point(double.PositiveInfinity, double.PositiveInfinity), Point.Infinity);
+        }
     }
 }

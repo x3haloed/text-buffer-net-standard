@@ -155,17 +155,37 @@ namespace TextBuffer
 
         #endregion Construction
 
+        #region Variables
+
+        private bool _frozen = false;
+        private Point _start;
+        private Point _end;
+
+        #endregion Variables
+
         #region Properties
 
         /// <summary>
         /// A {Point} representing the start of the {Range}.
         /// </summary>
-        public virtual Point Start { get; set; }
+        public Point Start
+        {
+            get => _start;
+            set => _start = _frozen
+                ? throw new InvalidOperationException("Cannot set value because object is frozen.")
+                : value;
+        }
 
         /// <summary>
         /// A {Point} representing the end of the {Range}.
         /// </summary>
-        public virtual Point End { get; set; }
+        public Point End
+        {
+            get => _end;
+            set => _end = _frozen
+                ? throw new InvalidOperationException("Cannot set value because object is frozen.")
+                : value;
+        }
 
         #endregion Properties
 
@@ -233,7 +253,11 @@ namespace TextBuffer
         /// immutable and returns itself.
         /// </summary>
         /// <returns>Returns an immutable version of this {Range}</returns>
-        public RangeImmutable Freeze() => new RangeImmutable(Start.Freeze(), End.Freeze());
+        public Range Freeze()
+        {
+            _frozen = true;
+            return this;
+        }
 
         /// <summary>
         /// Returns a new range that contains this range and the given range.

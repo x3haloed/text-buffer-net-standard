@@ -105,16 +105,36 @@ namespace TextBuffer
 
         #endregion Construction
 
+        #region Variables
+
+        private bool _frozen = false;
+        private double _row;
+        private double _column;
+
+        #endregion Variables
+
         #region Properties
         /// <summary>
         /// A zero-indexed {Number} representing the row of the {Point}.
         /// </summary>
-        public virtual double Row { get; set; }
+        public double Row
+        {
+            get => _row;
+            set => _row = _frozen
+                ? throw new InvalidOperationException("Cannot set value because object is frozen.")
+                : value;
+        }
 
         /// <summary>
         /// A zero-indexed {Number} representing the column of the {Point}.
         /// </summary>
-        public virtual double Column { get; set; }
+        public double Column
+        {
+            get => _column;
+            set => _column = _frozen
+                ? throw new InvalidOperationException("Cannot set value because object is frozen.")
+                : value;
+        }
 
         #endregion Properties
 
@@ -197,8 +217,8 @@ namespace TextBuffer
             return Row.GetHashCode() ^ Column.GetHashCode();
         }
 
-        public static Point Zero { get; } = new PointImmutable(0, 0);
-        public static Point Infinity { get; } = new PointImmutable(double.PositiveInfinity, double.PositiveInfinity);
+        public static Point Zero { get; } = new Point(0, 0).Freeze();
+        public static Point Infinity { get; } = new Point(double.PositiveInfinity, double.PositiveInfinity).Freeze();
 
         /// <summary>
         /// Returns a {Boolean} indicating whether this point precedes the given
@@ -268,7 +288,11 @@ namespace TextBuffer
         /// <returns>
         /// an immutable version of this {Point}
         /// </returns>
-        public PointImmutable Freeze() => new PointImmutable(Row, Column);
+        public Point Freeze()
+        {
+            _frozen = true;
+            return this;
+        }
 
         /// <summary>
         /// Build and return a new point by adding the rows and columns of
