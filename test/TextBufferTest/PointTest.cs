@@ -22,5 +22,13 @@ namespace TextBufferTest
             Assert.Equal(new Point(1, 3), Point.FromObject(new double[] { 1, 3 }));
             Assert.Equal(new Point(double.PositiveInfinity, double.PositiveInfinity), Point.Infinity);
         }
+
+        [Fact]
+        public void FromObjectReturnsTheCopyOfObjectIfItIsAnInstanceOfPoint()
+        {
+            var origin = new Point(0, 0);
+            Assert.Same(origin, Point.FromObject(origin, false));
+            Assert.NotSame(origin, Point.FromObject(origin, true));
+        }
     }
 }
