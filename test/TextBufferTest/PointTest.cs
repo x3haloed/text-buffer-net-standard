@@ -65,5 +65,17 @@ namespace TextBufferTest
         {
             Assert.Equal(expected, new Point(rowA, columnA).CompareTo(new Point(rowB, columnB)));
         }
+
+        [Theory]
+        [InlineData(true, 2, 3, 2, 5)]
+        [InlineData(true, 2, 3, 3, 4)]
+        [InlineData(false, 2, 3, 2, 3)]
+        [InlineData(false, 2, 3, 2, 1)]
+        [InlineData(false, 2, 3, 1, 2)]
+        public void IsLessThanReturnsABooleanIndicatingWhetherAPointPrecedesTheGivenPoint(
+            bool expected, double rowA, double columnA, double rowB, double columnB)
+        {
+            Assert.Equal(expected, new Point(rowA, columnA).IsLessThan(new Point(rowB, columnB)));
+        }
     }
 }
