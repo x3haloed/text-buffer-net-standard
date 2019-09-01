@@ -120,10 +120,24 @@ namespace TextBufferTest
         [InlineData(false, 1, 2, 3, 3)]
         [InlineData(false, 1, 2, 1, 3)]
         [InlineData(false, 1, 2, 3, 2)]
-        public void IsEqualReturnsIfWhetherTwoPointsAreEqual(
+        public void EqualsReturnsIfWhetherTwoPointsAreEqual(
             bool expected, double rowA, double columnA, double rowB, double columnB)
         {
-            Assert.Equal(expected, new Point(rowA, columnA).IsGreaterThanOrEqual(new Point(rowB, columnB)));
+            Assert.Equal(expected, new Point(rowA, columnA).Equals(new Point(rowB, columnB)));
+        }
+
+        [Theory]
+        [InlineData(false, -1, -1)]
+        [InlineData(false, -1, 0)]
+        [InlineData(false, -1, double.PositiveInfinity)]
+        [InlineData(false, 0, 0)]
+        [InlineData(true, 0, 1)]
+        [InlineData(true, 5, 0)]
+        [InlineData(true, 5, -1)]
+        public void IsPositiveReturnsTrueIfThePointRepresentsAForwardTraversal(
+            bool expected, double row, double column)
+        {
+            Assert.Equal(expected, new Point(row, column).IsPositive());
         }
     }
 }
