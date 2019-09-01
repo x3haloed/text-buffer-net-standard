@@ -198,7 +198,12 @@ namespace TextBuffer
                 return false;
             }
             return Row == other.Row && Column == other.Column;
-        }        
+        }
+
+        /// <summary>
+        /// Returns the given {Point} that is earlier in the buffer.
+        /// </summary>
+        public static Point Min(Point point1, Point point2) => point1.IsLessThanOrEqual(point2) ? point1 : point2;
 
         public override bool Equals(object obj)
         {
@@ -211,6 +216,8 @@ namespace TextBuffer
                 return false;
             }
         }
+
+        public static Point Max(Point point1, Point point2) => point1.CompareTo(point2) >= 0 ? point1 : point2;
 
         public override int GetHashCode()
         {

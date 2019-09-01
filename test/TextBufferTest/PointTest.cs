@@ -150,5 +150,23 @@ namespace TextBufferTest
         {
             Assert.Equal(expected, new Point(row, column).IsZero());
         }
+
+        [Theory]
+        [InlineData(1, 1, 3, 4, 1, 1)]
+        [InlineData(1, 2, 1, 2, 5, 6)]
+        public void MinReturnsTheMinimumOfTwoPoints(
+            double expectedRow, double expectedColumn, double rowA, double columnA, double rowB, double columnB)
+        {
+            Assert.Equal(new Point(expectedRow, expectedColumn), Point.Min(new Point(rowA, columnA), new Point(rowB, columnB)));
+        }
+
+        [Theory]
+        [InlineData(3, 4, 3, 4, 1, 1)]
+        [InlineData(5, 6, 1, 2, 5, 6)]
+        public void MaxReturnsTheMaximumOfTwoPoints(
+            double expectedRow, double expectedColumn, double rowA, double columnA, double rowB, double columnB)
+        {
+            Assert.Equal(new Point(expectedRow, expectedColumn), Point.Max(new Point(rowA, columnA), new Point(rowB, columnB)));
+        }
     }
 }
