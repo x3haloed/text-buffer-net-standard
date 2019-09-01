@@ -139,5 +139,16 @@ namespace TextBufferTest
         {
             Assert.Equal(expected, new Point(row, column).IsPositive());
         }
+
+        [Theory]
+        [InlineData(false, 1, 1)]
+        [InlineData(false, 0, 1)]
+        [InlineData(false, 1, 0)]
+        [InlineData(true, 0, 0)]
+        public void IsZeroReturnsTrueIfThePointIsZero(
+            bool expected, double row, double column)
+        {
+            Assert.Equal(expected, new Point(row, column).IsZero());
+        }
     }
 }
