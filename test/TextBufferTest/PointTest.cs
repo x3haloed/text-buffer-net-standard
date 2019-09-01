@@ -113,5 +113,17 @@ namespace TextBufferTest
         {
             Assert.Equal(expected, new Point(rowA, columnA).IsGreaterThanOrEqual(new Point(rowB, columnB)));
         }
+
+        [Theory]
+        [InlineData(true, 1, 1, 1, 1)]
+        [InlineData(true, 1, 2, 1, 2)]
+        [InlineData(false, 1, 2, 3, 3)]
+        [InlineData(false, 1, 2, 1, 3)]
+        [InlineData(false, 1, 2, 3, 2)]
+        public void IsEqualReturnsIfWhetherTwoPointsAreEqual(
+            bool expected, double rowA, double columnA, double rowB, double columnB)
+        {
+            Assert.Equal(expected, new Point(rowA, columnA).IsGreaterThanOrEqual(new Point(rowB, columnB)));
+        }
     }
 }
