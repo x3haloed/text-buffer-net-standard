@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using TextBuffer;
 using Xunit;
 
@@ -167,6 +167,85 @@ namespace TextBufferTest
             double expectedRow, double expectedColumn, double rowA, double columnA, double rowB, double columnB)
         {
             Assert.Equal(new Point(expectedRow, expectedColumn), Point.Max(new Point(rowA, columnA), new Point(rowB, columnB)));
+        }
+
+        [Fact]
+        public void TranslateReturnsANewPointByAddingCorrespondingCoordinates()
+        {
+            Assert.Equal(new Point(3, 4), new Point(1, 1).Translate(new Point(2, 3)));
+            Assert.Equal(Point.Infinity, Point.Infinity.Translate(new Point(2, 3)));
+            Assert.Equal(new Point(5, 6), Point.Zero.Translate(new Point(5, 6)));
+            Assert.Equal(new Point(4, 5), new Point(1, 1).Translate(new Point(3, 4)));
+        }
+
+        [Theory]
+        [InlineData(2, 6, 2, 3, 0, 3)]
+        [InlineData(5, 2, 4, 3, 1, 2)]
+        [InlineData(6, 4, 1, 3, 5, 4)]
+        public void TraverseReturnsANewPointByTraversingGivenRowsAndColumns(
+            double expectedRow, double expectedColumn, double rowA, double columnA, double rowB, double columnB)
+        {
+            Assert.Equal(
+                new Point(expectedRow, expectedColumn),
+                new Point(rowA, columnA).Traverse(new Point(rowB, columnB)));
+        }
+
+        [Theory]
+        [InlineData(0, 2, 2, 5, 2, 3)]
+        [InlineData(0, -2, 2, 3, 2, 5)]
+        [InlineData(0, 0, 2, 3, 2, 3)]
+        [InlineData(1, 4, 3, 4, 2, 3)]
+        [InlineData(-1, 3, 2, 3, 3, 5)]
+        public void TraversalFromReturnsAPointThatOtherHasToTraverseToGetToGivenPoint(
+            double expectedRow, double expectedColumn, double rowA, double columnA, double rowB, double columnB)
+        {
+            Assert.Equal(
+                new Point(expectedRow, expectedColumn),
+                new Point(rowA, columnA).TraversalFrom(new Point(rowB, columnB)));
+        }
+
+        [Fact]
+        public void ToArrayReturnsAnArrayOfRowAndColumn()
+        {
+            double[] result;
+
+            result = new Point(1, 3).ToArray();
+            Assert.Equal(1, result[0]);
+            Assert.Equal(3, result[1]);
+
+            result = Point.Zero.ToArray();
+            Assert.Equal(0, result[0]);
+            Assert.Equal(0, result[1]);
+
+            result = Point.Infinity.ToArray();
+            Assert.True(double.IsInfinity(result[0]));
+            Assert.True(double.IsInfinity(result[1]));
+        }
+
+        [Fact]
+        public void SerializeReturnsAnArrayOfRowAndColumn()
+        {
+            double[] result;
+
+            result = new Point(1, 3).Serialize();
+            Assert.Equal(1, result[0]);
+            Assert.Equal(3, result[1]);
+
+            result = Point.Zero.Serialize();
+            Assert.Equal(0, result[0]);
+            Assert.Equal(0, result[1]);
+
+            result = Point.Infinity.Serialize();
+            Assert.True(double.IsInfinity(result[0]));
+            Assert.True(double.IsInfinity(result[1]));
+        }
+
+        [Fact]
+        public void ToStringReturnsStringRepresentationOfPoint()
+        {
+            Assert.Equal("(4, 5)", new Point(4, 5).ToString());
+            Assert.Equal("(0, 0)", Point.Zero.ToString());
+            Assert.Equal("(∞, ∞)", Point.Infinity.ToString());
         }
     }
 }
