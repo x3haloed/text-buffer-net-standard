@@ -1,10 +1,38 @@
 ﻿using System;
-using System.Collections.Immutable;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace TextBuffer
 {
     public class OnDidChangeEventArgs : EventArgs
     {
+        public OnDidChangeEventArgs(
+            bool wasValid,
+            bool isValid,
+            bool hadTail,
+            bool hasTail,
+            IDictionary<string, object> oldProperties,
+            IDictionary<string, object> newProperties,
+            Point oldHeadPosition,
+            Point newHeadPosition,
+            Point oldTailPosition,
+            Point newTailPosition,
+            bool textChanged
+            )
+        {
+            OldHeadPosition = oldHeadPosition;
+            NewHeadPosition = newHeadPosition;
+            OldTailPosition = oldTailPosition;
+            NewTailPosition = newTailPosition;
+            WasValid = wasValid;
+            IsValid = isValid;
+            HadTail = hadTail;
+            HasTail = hasTail;
+            OldProperties = new ReadOnlyDictionary<string, object>(oldProperties);
+            NewProperties = new ReadOnlyDictionary<string, object>(newProperties);
+            TextChanged = textChanged;
+        }
+
         /// <summary>
         /// The former head position
         /// </summary>
@@ -48,12 +76,12 @@ namespace TextBuffer
         /// <summary>
         /// the marker's custom properties before the change.
         /// </summary>
-        public ImmutableDictionary<string, object> OldProperties { get; }
+        public ReadOnlyDictionary<string, object> OldProperties { get; }
 
         /// <summary>
         /// the marker's custom properties after the change.
         /// </summary>
-        public ImmutableDictionary<string, object> NewProperties { get; }
+        public ReadOnlyDictionary<string, object> NewProperties { get; }
 
         /// <summary>
         /// whether this change was caused by a textual change to the buffer or whether the marker was
